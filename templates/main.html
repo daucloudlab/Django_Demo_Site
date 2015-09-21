@@ -1,0 +1,23 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head lang="kz">
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel = "stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}"/>
+
+</head>
+<body>
+
+<div class="container">
+<div class="row">
+<a href = "/articles/"><h1>Менің блогым</h1></a>
+{% block articles %}{% endblock %}
+{% block article %}{% endblock %}
+</div>
+</div>
+
+<script src = "{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/bootstrap.js' %}"></script>
+</body>
+</html>

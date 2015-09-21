@@ -1,3 +1,5 @@
+# -*- coding:utf-8 -*-
+
 """firstapp URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -18,4 +20,6 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^basicview/', include('article.urls')),
+    url(r'^articles/', include('article.urls', namespace='article')),
 ]
