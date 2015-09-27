@@ -14,4 +14,12 @@
 {% endfor %}
 </ul>
 
+    <form action="{% url 'article:addcomment' article.id %}" method="POST">
+    {% csrf_token %}
+        {{ form.as_p }}
+    <p>
+        <input type = "submit" value="Добавить">
+    </p>
+    </form>
+
 {% endblock %}

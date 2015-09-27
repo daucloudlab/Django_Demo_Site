@@ -19,7 +19,7 @@ class Article(models.Model):
 
 
 class Comments(models.Model):
-    comments_text = models.TextField()
+    comments_text = models.TextField(verbose_name = "Коменттің мәтіні")
     comments_article = models.ForeignKey(Article)
 
     class Meta:

@@ -1,8 +1,12 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+#-*-coding: utf-8 -*-
+
+from django.shortcuts import render, redirect
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.template.loader import get_template
 from django.template import Context
 from article.models import Article, Comments
+from django.core.urlresolvers import reverse
+from forms import CommentForm
 # Create your views here.
 
 def basic_one(request):
@@ -21,8 +25,29 @@ def template_three(request):
 def articles(request):
     return render(request, 'articles.html', {'articles':Article.objects.all()})
 
-def article(request, article_id):
-    return render(request, 'article.html',
-                  {'article':Article.objects.get(pk=article_id),
-                   'comments':Comments.objects.filter(comments_article_id = article_id)})
+def article(request, article_id = 1):
+    comment_form = CommentForm()
+    args = {}
+    args['article'] = Article.objects.get(pk = article_id)
+    args['comments'] = Comments.objects.filter(comments_article_id = article_id)
+    args['form'] = comment_form
+    return render(request, 'article.html', args)
 
+def addlike(request, article_id):
+    try:
+        article_object = Article.objects.get(pk = article_id)
+        article_object.article_likes += 1
+        article_object.save()
+    except Article.DoesNotExist:
+        raise Http404("Объект табылмады")
+    return HttpResponseRedirect(reverse('article:all'))
+
+def addcomment(request, article_id):
+    if request.POST:
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            form = form.save(commit=False)
+            # form.comments_article_id = article_id
+            form.comments_article = Article.objects.get(pk = article_id)
+            form.save()
+    return HttpResponseRedirect(reverse('article:detail',args = (article_id,)))
